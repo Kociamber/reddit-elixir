@@ -33,8 +33,25 @@ defmodule Reddit.Subreddit do
     |> Tesla.get("/r/#{subreddit}/new/", query: opts)
   end
 
+  @doc """
+  Get the hot posts for a given subreddit
+
+      iex> hot_posts(client, "evangelion")
+      {:ok, %Tesla.Env{body: %{"data" => %{...}}}
+  """
   def hot_posts(client, subreddit, opts \\ @default_options) do
     client
     |> Tesla.get("/r/#{subreddit}/hot/", query: opts)
+  end
+
+  @doc """
+  Get the comments for a given post
+
+      iex> fetch_comments(client, "/r/RobinHoodPennyStocks/comments/lfqrkk/daily_discussion_thread/")
+      {:ok, %Tesla.Env{body: %{"data" => %{...}}}
+  """
+  def fetch_comments(client, permalink, opts \\ @default_options) do
+    client
+    |> Tesla.get(permalink, query: opts)
   end
 end
